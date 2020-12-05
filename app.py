@@ -26,64 +26,6 @@ app = Flask(__name__)
 print('Successfully loaded VGG16 model...')
 print('Visit http://127.0.0.1:5000')
 
-def network(shape1, drop_out1=0.1, drop_out2=0.2, batch_size=32, optimizer='Adam'):
-    sequence = Input(shape=shape1, name='Sequence1')
-
-    conv = Sequential()
-    conv.add(Conv2D(512, (3, 2), activation='relu', input_shape = shape1))
-    conv.add(MaxPooling2D(pool_size=(2, 2), padding='same' ))
-    conv.add(Dropout(0.1))
-
-    conv.add(Conv2D(256, (3, 2), activation='relu', padding='same'))
-    conv.add(MaxPooling2D(pool_size=(2, 2), padding='same'))
-    conv.add(Dropout(0.1))
-
-    conv.add(Conv2D(128, (3, 2), activation='relu', padding='same'))
-    conv.add(MaxPooling2D(pool_size=(2, 2), padding='same'))
-    conv.add(Dropout(0.1))
-    
-    conv.add(Conv2D(64, (3, 2), activation='relu', padding='same'))
-    conv.add(MaxPooling2D(pool_size=(2, 2), padding='same'))
-    conv.add(Dropout(0.1))
-    
-    conv.add(Conv2D(64, (2, 2), activation='relu', padding='same'))
-    conv.add(MaxPooling2D(pool_size=(2, 2), padding='same'))
-    conv.add(Dropout(0.1))
-    
-    conv.add(Conv2D(64, (2, 2), activation='relu', padding='same'))
-    conv.add(MaxPooling2D(pool_size=(2, 2), padding='same'))
-    conv.add(Dropout(0.1))
-    
-    conv.add(Conv2D(32, (2, 2), activation='relu', padding='same'))
-    conv.add(MaxPooling2D(pool_size=(2, 2), padding='same'))
-    conv.add(Dropout(0.1))
-    
-    conv.add(Conv2D(32, (3, 2), activation='relu', padding='same'))
-    conv.add(MaxPooling2D(pool_size=(2, 2), padding='same'))
-    conv.add(Dropout(0.1))
-    
-    #conv.add(GlobalAveragePooling2D(input_shape=shape1))
-    #conv.add(Dropout(0.1))
-
-    part1 = conv(sequence)
-
-    final = Flatten()(part1)
-    final = Dense(128, activation='relu')(final)
-    final = Dense(32, activation='relu')(final)
-    final = Dense(2, activation='sigmoid')(final)
-
-    model = Model(inputs=[sequence], outputs=[final])
-
-    optimizer = Adam(learning_rate=0.0001)
-
-    model.compile(loss='binary_crossentropy', optimizer=optimizer,  
-                    metrics=['accuracy', 'Precision', 'Recall', 'TrueNegatives',  'TruePositives', 'FalseNegatives', 'FalsePositives',  'AUC', 'categorical_accuracy', 'mean_squared_error']
-                  )
-
-    model.summary()
-
-    return model
-
 def vggnetwork2(shape1, drop_out1=0.1, drop_out2=0.2, batch_size=32, optimizer='Adam'):
     vgg_conv = VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
     # Freeze the layers except the last 4 layers
@@ -180,9 +122,15 @@ def model_predict(img_path):
 
     image = load_img(img_path, target_size=(224, 224))
     
+    
+    image = image.resize((224, 224))
+
     image = img_to_array(image)
-    image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
-    image = preprocess_input(image)
+    # preprocess the image by (1) expanding the dimensions and
+    # (2) subtracting the mean RGB pixel intensity from the
+    # ImageNet dataset
+    #image = np.expand_dims(image, axis=0)
+    image = imagenet_utils.preprocess_input(image)
 
     #global graph
     #with graph.as_default():

@@ -12,8 +12,6 @@ h5py==2.10.0
 itsdangerous==1.1.0
 Jinja2==2.10.3
 joblib==0.14.1
-Keras-Applications==1.0.8
-Keras-Preprocessing==1.1.0
 Markdown==3.1.1
 MarkupSafe==1.1.1
 numpy==1.18.1
@@ -25,5 +23,3 @@ termcolor==1.1.0
 Werkzeug==0.16.0
 wincertstore==0.2
 WTForms==2.2.1
-keras==2.3.1
-filesplit==3.0.2

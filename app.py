@@ -88,6 +88,11 @@ fs = Filesplit()
 
 fs.merge(input_dir="./models2/", callback=merge_cb)
 
+for root, dirs, files in os.walk("./models2/"):
+    for filename in files:
+        print(filename)
+
+
 MODEL_VGG16 = vggnetwork2((224,224,3)) #load_model('models/model.weights.best.hdf5')
 MODEL_VGG16.load_weights('./models2/model.weights.best.hdf5')
     

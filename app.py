@@ -86,7 +86,7 @@ def merge_cb(f, s):
 
 fs = Filesplit()
 
-fs.merge(input_dir="./models2/", callback=merge_cb)
+fs.merge(input_dir=".", callback=merge_cb)
 
 for root, dirs, files in os.walk("./models2/"):
     for filename in files:
@@ -94,7 +94,7 @@ for root, dirs, files in os.walk("./models2/"):
 
 
 MODEL_VGG16 = vggnetwork2((224,224,3)) #load_model('models/model.weights.best.hdf5')
-MODEL_VGG16.load_weights('./models2/model.weights.best.hdf5')
+MODEL_VGG16.load_weights('model.weights.best.hdf5')
     
 graph = tf.get_default_graph()
 

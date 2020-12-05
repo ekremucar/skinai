@@ -157,8 +157,12 @@ MODEL_VGG16 = network((224,224,3)) #load_model('models/model.weights.best.hdf5')
 
 d = os.path.dirname(os.path.abspath(__file__))  # your script's dir, my_project
 filepath = os.path.join(d, "model.weights.best.hdf5")
+
+print(filepath)
+
 filepath = os.path.abspath(filepath) # make it an absolute path
 
+print(filepath)
 
 MODEL_VGG16.load_weights(filepath)
     

@@ -134,13 +134,13 @@ def model_predict(img_path):
 
     #global graph
     #with graph.as_default():
-    #image_stack = []
+    image_stack = []
 
-    #image_stack.append(image)
-    
     image = np.expand_dims(image, axis=0)
 
-    preds = MODEL_VGG16.predict(image)
+    image_stack.append(image)
+    
+    preds = MODEL_VGG16.predict(image_stack)
     
     return preds
 

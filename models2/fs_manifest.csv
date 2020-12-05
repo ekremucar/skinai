@@ -1,0 +1,4 @@
+filename,filesize,encoding,header
+model.weights.best_1.hdf5,60000000,,
+model.weights.best_2.hdf5,60000000,,
+model.weights.best_3.hdf5,36869416,,

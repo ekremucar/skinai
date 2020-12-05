@@ -120,7 +120,7 @@ def model_predict(img_path):
     MODEL_VGG16.load_weights('modeltf')
 
 
-    image = load_img(img_path, target_size=(224, 224))
+    image = load_img(img_path)
     
     
     image = image.resize((224, 224))
@@ -161,11 +161,13 @@ def upload():
         
         # make prediction about this image's class
         preds = model_predict(file_path)
+        print(preds)
         
-        pred_class = decode_predictions(preds, top=10)
-        result = str(pred_class[0][0][1])
-        print('[PREDICTED CLASSES]: {}'.format(pred_class))
-        print('[RESULT]: {}'.format(result))
+        #pred_class = decode_predictions(preds, top=10)
+        #result = str(pred_class[0][0][1])
+        #print('[PREDICTED CLASSES]: {}'.format(pred_class))
+        #print('[RESULT]: {}'.format(result))
+        result = preds
         
         return result
     

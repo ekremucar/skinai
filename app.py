@@ -88,7 +88,9 @@ fs = Filesplit()
 
 fs.merge(input_dir=".", callback=merge_cb)
 
-for root, dirs, files in os.walk("./models2/"):
+print("listing files")
+
+for root, dirs, files in os.walk("."):
     for filename in files:
         print(filename)
 

@@ -155,7 +155,7 @@ def vggnetwork2(shape1, drop_out1=0.1, drop_out2=0.2, batch_size=32, optimizer='
 MODEL_VGG16 = network((224,224,3)) #load_model('models/model.weights.best.hdf5')
 #MODEL_VGG16.load_weights('model.weights.best.hdf5')
     
-graph = tf.get_default_graph()
+#graph = tf.get_default_graph()
 
 
 def model_predict(img_path):
@@ -170,9 +170,10 @@ def model_predict(img_path):
     image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
     image = preprocess_input(image)
 
-    global graph
-    with graph.as_default():
-        preds = MODEL_VGG16.predict(image)
+    #global graph
+    #with graph.as_default():
+    
+    preds = MODEL_VGG16.predict(image)
     
     return preds
 

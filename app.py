@@ -26,6 +26,60 @@ app = Flask(__name__)
 print('Successfully loaded VGG16 model...')
 print('Visit http://127.0.0.1:5000')
 
+def network(shape1, shape2, drop_out1=0.1, drop_out2=0.2, batch_size=32, optimizer='Adam'):
+    sequence = Input(shape=shape1, name='Sequence1')
+
+    conv = Sequential()
+    conv.add(Conv2D(128, (6, 6), activation='relu', input_shape = shape1))
+    conv.add(MaxPooling2D(pool_size=(2, 2), padding='same' ))
+    conv.add(Dropout(0.1))
+
+    conv.add(Conv2D(64, (6, 6), activation='relu', padding='same'))
+    conv.add(MaxPooling2D(pool_size=(2, 2), padding='same'))
+    conv.add(Dropout(0.1))
+
+    conv.add(Conv2D(64, (3, 3), activation='relu', padding='same'))
+    conv.add(MaxPooling2D(pool_size=(2, 2), padding='same'))
+    conv.add(Dropout(0.1))
+
+    conv.add(Conv2D(32, (3, 3), activation='relu', padding='same'))
+    conv.add(MaxPooling2D(pool_size=(2, 2), padding='same'))
+  
+    conv.add(GlobalAveragePooling2D())
+
+
+    part1 = conv(sequence)
+    
+    
+    sequence2 = Input(shape=shape2, name='Sequence2')
+
+    conv2 = Sequential()
+    conv2.add(Conv2D(64, (6, 2), activation='relu', input_shape = shape2))
+    conv2.add(MaxPooling2D(pool_size=(2, 2), padding='same' ))
+    conv2.add(Dropout(0.1))
+
+    conv2.add(Conv2D(32, (6, 2), activation='relu', padding='same'))
+    conv2.add(MaxPooling2D(pool_size=(2, 2), padding='same'))
+    conv2.add(Dropout(0.1))
+
+    conv2.add(GlobalAveragePooling2D(input_shape=shape2))
+
+    part2 = conv2(sequence2)
+
+    merged = concatenate([part1, part2])
+
+    final = Flatten()(merged) 
+    final = Dense(128, activation='relu')(final)
+    final = Dense(64, activation='relu')(final)
+    final = Dense(2, activation='sigmoid')(final)
+
+    model = Model(inputs=[sequence, sequence2], outputs=[final])
+    
+    opt = Adam(learning_rate=0.00001)
+
+    model.compile(loss='binary_crossentropy', optimizer=opt,  metrics=['accuracy', 'Precision', 'Recall', 'TrueNegatives',  'TruePositives', 'FalseNegatives', 'FalsePositives',  'AUC', 'categorical_accuracy', 'mean_squared_error'])
+
+    return model
 
 def vggnetwork2(shape1, drop_out1=0.1, drop_out2=0.2, batch_size=32, optimizer='Adam'):
     vgg_conv = VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
@@ -81,21 +135,21 @@ def vggnetwork2(shape1, drop_out1=0.1, drop_out2=0.2, batch_size=32, optimizer='
 
     return model
 
-def merge_cb(f, s):
-    print("file: {0}, size: {1}".format(f, s))
+#def merge_cb(f, s):
+#    print("file: {0}, size: {1}".format(f, s))
 
-fs = Filesplit()
+#fs = Filesplit()
 
-fs.merge(input_dir=".", callback=merge_cb)
+#fs.merge(input_dir=".", callback=merge_cb)
 
-print("listing files")
+#print("listing files")
 
-for root, dirs, files in os.walk("."):
-    for filename in files:
-        print(filename)
+#for root, dirs, files in os.walk("."):
+#    for filename in files:
+#        print(filename)
 
 
-MODEL_VGG16 = vggnetwork2((224,224,3)) #load_model('models/model.weights.best.hdf5')
+MODEL_VGG16 = network((224,224,3)) #load_model('models/model.weights.best.hdf5')
 MODEL_VGG16.load_weights('model.weights.best.hdf5')
     
 graph = tf.get_default_graph()

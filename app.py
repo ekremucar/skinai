@@ -115,6 +115,8 @@ def model_predict(img_path):
     '''
         helper method to process an uploaded image
     '''
+    global MODEL_VGG16
+    
     if MODEL_VGG16 is None : 
         MODEL_VGG16 = vggnetwork2((224,224,3))
         MODEL_VGG16.load_weights('modeltf')

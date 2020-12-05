@@ -152,8 +152,15 @@ def vggnetwork2(shape1, drop_out1=0.1, drop_out2=0.2, batch_size=32, optimizer='
 #        print(filename)
 
 
+
 MODEL_VGG16 = network((224,224,3)) #load_model('models/model.weights.best.hdf5')
-MODEL_VGG16.load_weights('model.weights.best.hdf5')
+
+d = os.path.dirname(os.path.abspath(__file__))  # your script's dir, my_project
+filepath = os.path.join(d, "model.weights.best.hdf5")
+filepath = os.path.abspath(filepath) # make it an absolute path
+
+
+MODEL_VGG16.load_weights(filepath)
     
 #graph = tf.get_default_graph()
 

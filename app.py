@@ -163,13 +163,15 @@ def upload():
         preds = model_predict(file_path)
         print(preds)
         
+        for a in preds : 
+            return "Benign " + a[0] + " Malignant " + a[1]
         #pred_class = decode_predictions(preds, top=10)
         #result = str(pred_class[0][0][1])
         #print('[PREDICTED CLASSES]: {}'.format(pred_class))
         #print('[RESULT]: {}'.format(result))
-        result = preds
+        #result = preds
         
-        return result
+        #return result
     
     return None
 

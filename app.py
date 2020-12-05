@@ -84,6 +84,8 @@ def vggnetwork2(shape1, drop_out1=0.1, drop_out2=0.2, batch_size=32, optimizer='
 def merge_cb(f, s):
     print("file: {0}, size: {1}".format(f, s))
 
+fs = Filesplit()
+
 fs.merge(input_dir="./models2/", callback=merge_cb)
 
 MODEL_VGG16 = vggnetwork2((224,224,3)) #load_model('models/model.weights.best.hdf5')

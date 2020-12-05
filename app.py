@@ -109,15 +109,15 @@ def vggnetwork2(shape1, drop_out1=0.1, drop_out2=0.2, batch_size=32, optimizer='
 #MODEL_VGG16.load_weights(filepath)
     
 #graph = tf.get_default_graph()
-
+MODEL_VGG16 = None
 
 def model_predict(img_path):
     '''
         helper method to process an uploaded image
     '''
-    MODEL_VGG16 = vggnetwork2((224,224,3))
-
-    MODEL_VGG16.load_weights('modeltf')
+    if MODEL_VGG16 == None : 
+        MODEL_VGG16 = vggnetwork2((224,224,3))
+        MODEL_VGG16.load_weights('modeltf')
 
 
     image = load_img(img_path)
@@ -163,8 +163,9 @@ def upload():
         preds = model_predict(file_path)
         print(preds)
         
-        for a in preds : 
-            return "Benign " + a[0] + " Malignant " + a[1]
+            
+        return " ".join(str(x) for x in preds[0])
+            
         #pred_class = decode_predictions(preds, top=10)
         #result = str(pred_class[0][0][1])
         #print('[PREDICTED CLASSES]: {}'.format(pred_class))

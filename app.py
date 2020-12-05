@@ -23,8 +23,7 @@ from flask import Flask, redirect, url_for, request, render_template
 # define a Flask app
 app = Flask(__name__)
 
-print('Successfully loaded VGG16 model...')
-print('Visit http://127.0.0.1:5000')
+
 
 def vggnetwork2(shape1, drop_out1=0.1, drop_out2=0.2, batch_size=32, optimizer='Adam'):
     vgg_conv = VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
@@ -109,22 +108,21 @@ def vggnetwork2(shape1, drop_out1=0.1, drop_out2=0.2, batch_size=32, optimizer='
 #MODEL_VGG16.load_weights(filepath)
     
 #graph = tf.get_default_graph()
-MODEL_VGG16 = None
+mymodel = None
 
 def model_predict(img_path):
     '''
         helper method to process an uploaded image
     '''
-    global MODEL_VGG16
+    global mymodel
     
-    if MODEL_VGG16 is None : 
-        MODEL_VGG16 = vggnetwork2((224,224,3))
-        MODEL_VGG16.load_weights('modeltf')
-
+    if mymodel is None : 
+        mymodel = vggnetwork2((224,224,3))
+        mymodel.load_weights('modeltf')
+        print('Successfully loaded VGG16 model...')
 
     image = load_img(img_path)
-    
-    
+
     image = image.resize((224, 224))
 
     image = img_to_array(image)
@@ -142,7 +140,7 @@ def model_predict(img_path):
 
     image_stack.append(image)
     
-    preds = MODEL_VGG16.predict(image_stack)
+    preds = mymodel.predict(image_stack)
     
     return preds
 
@@ -163,9 +161,7 @@ def upload():
         
         # make prediction about this image's class
         preds = model_predict(file_path)
-        print(preds)
-        
-            
+                   
         return " Benign : {} | Malignant : {}".format(preds[0][0], preds[0][1])
             
         #pred_class = decode_predictions(preds, top=10)

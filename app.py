@@ -153,7 +153,7 @@ def vggnetwork2(shape1, drop_out1=0.1, drop_out2=0.2, batch_size=32, optimizer='
 
 
 MODEL_VGG16 = network((224,224,3)) #load_model('models/model.weights.best.hdf5')
-MODEL_VGG16.load_weights('model.weights.best.hdf5')
+#MODEL_VGG16.load_weights('model.weights.best.hdf5')
     
 graph = tf.get_default_graph()
 

@@ -93,9 +93,6 @@ def vggnetwork2(shape1, drop_out1=0.1, drop_out2=0.2, batch_size=32, optimizer='
 #    for filename in files:
 #        print(filename)
 
-MODEL_VGG16 = vggnetwork2((224,224,3))
-
-MODEL_VGG16.load_weights('modeltf')
 
 
 #MODEL_VGG16 = load_model('modeltf') # network((224,224,3)) #load_model('models/model.weights.best.hdf5')
@@ -118,7 +115,10 @@ def model_predict(img_path):
     '''
         helper method to process an uploaded image
     '''
-    
+    MODEL_VGG16 = vggnetwork2((224,224,3))
+
+    MODEL_VGG16.load_weights('modeltf')
+
 
     image = load_img(img_path, target_size=(224, 224))
     

@@ -151,9 +151,12 @@ def vggnetwork2(shape1, drop_out1=0.1, drop_out2=0.2, batch_size=32, optimizer='
 #    for filename in files:
 #        print(filename)
 
+MODEL_VGG16 = vggnetwork2((224,224,3))
+
+MODEL_VGG16.load_weights(tmp_dir + 'modeltf')
 
 
-MODEL_VGG16 = load_model('savedmodel') # network((224,224,3)) #load_model('models/model.weights.best.hdf5')
+#MODEL_VGG16 = load_model('modeltf') # network((224,224,3)) #load_model('models/model.weights.best.hdf5')
 
 #d = os.path.dirname(os.path.abspath(__file__))  # your script's dir, my_project
 #filepath = os.path.join(d, "model.weights.best.hdf5")

@@ -161,8 +161,10 @@ def upload():
         
         # make prediction about this image's class
         preds = model_predict(file_path)
-                   
-        return " Benign : {} | Malignant : {}".format(preds[0][0], preds[0][1])
+        if preds[0][0] > preds[0][1] : 
+            return " Benign : {} ".format(preds[0][0])
+        else : 
+            return " Malignant : {} ".format(preds[0][1])
             
         #pred_class = decode_predictions(preds, top=10)
         #result = str(pred_class[0][0][1])
